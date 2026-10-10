@@ -1,19 +1,26 @@
 local love = require "love"
+local SceneManager = require "scene-manager"
 
 local StartMenu = {}
 
 local titleFont, buttonFont
+local menuMusic
 local buttons = {}
 
 local sprites = {}
 local frameSize = 36
 local spriteScale = 3
 
+local function isInside(px, py, rect)
+  return px >= rect.x and px <= rect.x + rect.width
+     and py >= rect.y and py <= rect.y + rect.height
+end
+
 function StartMenu.load()
   titleFont = love.graphics.newFont("assets/Minecraft.ttf", 72)
   buttonFont = love.graphics.newFont("assets/Minecraft.ttf", 32)
-  src1 = love.audio.newSource("assets/arcade-beat.mp3", "stream")
-  src1:play()
+  menuMusic = love.audio.newSource("assets/arcade-beat.mp3", "stream")
+  menuMusic:setLooping(true)
 
   local function makeSprite(path)
     local image = love.graphics.newImage(path)
@@ -32,15 +39,17 @@ function StartMenu.load()
   local baseWidth, baseHeight = 300, 70
 
   buttons = {
-    {label = "Start", x = (width - baseWidth) / 2, y = height * 0.50, width = baseWidth, height = baseHeight},
-    {label = "Exit", x = (width - baseWidth) / 2, y = height * 0.50 + baseHeight + 30, width = baseWidth, height = baseHeight},
+    {label = "Start", x = (width - baseWidth) / 2, y = height * 0.50, width = baseWidth, height = baseHeight, action = function() SceneManager.switch("game") end},
+    {label = "Exit", x = (width - baseWidth) / 2, y = height * 0.50 + baseHeight + 30, width = baseWidth, height = baseHeight, action = function() love.event.quit() end},
   }
 end
 
-function StartMenu.update(dt) 
-  if not src1:isPlaying( ) then
-    love.audio.play(src1)
-  end
+function StartMenu.enter()
+  menuMusic:play()
+end
+
+function StartMenu.leave()
+  menuMusic:stop()
 end
 
 function StartMenu.draw()
