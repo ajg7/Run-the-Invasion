@@ -11,9 +11,9 @@ local sprites = {}
 local frameSize = 36
 local spriteScale = 3
 
-local function isInside(px, py, rect)
-  return px >= rect.x and px <= rect.x + rect.width
-     and py >= rect.y and py <= rect.y + rect.height
+local function isInside(pointX, pointY, rect)
+  return pointX >= rect.x and pointX <= rect.x + rect.width
+     and pointY >= rect.y and pointY <= rect.y + rect.height
 end
 
 function StartMenu.load()
