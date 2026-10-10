@@ -8,6 +8,9 @@ local buttons = {}
 function StartMenu.load()
   titleFont = love.graphics.newFont("assets/Minecraft.ttf", 72)
   buttonFont = love.graphics.newFont("assets/Minecraft.ttf", 32)
+  src1 = love.audio.newSource("assets/arcade-beat.mp3", "stream")
+  src1:play()
+
 
   local width, height = love.graphics.getDimensions()
   local baseWidth, baseHeight = 300, 70
@@ -16,6 +19,12 @@ function StartMenu.load()
     {label = "Start", x = (width - baseWidth) / 2, y = height * 0.50, width = baseWidth, height = baseHeight},
     {label = "Exit", x = (width - baseWidth) / 2, y = height * 0.50 + baseHeight + 30, width = baseWidth, height = baseHeight},
   }
+end
+
+function StartMenu.update(dt) 
+  if not src1:isPlaying( ) then
+    love.audio.play(src1)
+  end
 end
 
 function StartMenu.draw()
